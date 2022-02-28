@@ -2,6 +2,9 @@
 package-lock.json
 node_modules/
 
+# Build directory
+dist/
+
 # Optional npm cache directory
 .npm
 
