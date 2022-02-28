@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import aws from "./routes/aws";
 
 dotenv.config();
 const app = express();
@@ -9,6 +10,8 @@ const port = process.env.SERVER_PORT || 8080;
 app.get( "/", ( req, res ) => {
     res.send( "Hello world!" );
 } );
+
+app.use('/aws', aws);
 
 // Start the Express server
 app.listen( port, () => {
