@@ -9,7 +9,7 @@ interface GeocodingResponse {
   status: string;
 }
 
-app.get('/', async (req, res) => {
+app.get('/geocode', async (req, res) => {
   let { address } = req.query;
   if (!address) return res.status(400).json('Please provide an address');
 
