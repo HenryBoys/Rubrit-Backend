@@ -27,7 +27,29 @@ app.post('/upload-file', upload.single('file'), async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.json({ message: 'File uploaded successfully', uri: `${env.aws_s3.uri}/${req.body.path}/${req.body.title}` });
+  res.json({ message: 'File uploaded successfully', url: `${env.aws_s3.uri}/${req.body.path}/${req.body.title}` });
+});
+
+app.post('/upload-files', upload.array('files'), async (req, res) => {
+  // Request body: Form
+  // Fields: path (dir/subdir/etc), title (unique), files (array of uploaded files)
+  if (!req.body.path || !req.body.title || !req.files) return res.status(400).json('Invalid request');
+  const files = req.files;
+  let uploadedFilesUrl: string[] = [];
+  let response;
+  try {
+    // @ts-ignore
+    let fileUploadPromises = files.map(file => {
+      uploadedFilesUrl.push(`${env.aws_s3.uri}/${req.body.path}/${file.originalname}`)
+      const data = { Bucket: env.aws_s3.bucket, Key: `${req.body.path}/${file.originalname}`, Body: file.buffer };
+      const command = new PutObjectCommand(data);
+      return client.send(command);
+    });
+    response = await Promise.all(fileUploadPromises);
+  } catch (error) {
+    console.log(error);
+  }
+  res.json({ message: 'File uploaded successfully', urls: uploadedFilesUrl});
 });
 
 export default app;
