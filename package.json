@@ -13,6 +13,9 @@
     "type": "git",
     "url": "https://github.com/HenryBoys/Rubrit-Backend.git"
   },
+  "engines": {
+    "node": "16.14.0"
+  },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.53.1",
     "axios": "^0.26.0",
