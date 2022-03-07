@@ -5,7 +5,7 @@ import maps from "./routes/maps";
 
 dotenv.config();
 const app = express();
-const port = process.env.SERVER_PORT || 8080;
+const port = process.env.PORT || 8080;
 
 // Entrypoint
 app.get( "/", ( req, res ) => {
