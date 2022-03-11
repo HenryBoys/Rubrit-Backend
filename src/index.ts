@@ -8,7 +8,7 @@ import subs from "./routes/subs";
 
 dotenv.config();
 const app = express();
-const port = process.env.SERVER_PORT || 8080;
+const port = process.env.PORT || 8080;
 
 const corsOptions = {
   origin: ["http://localhost:3000", "https://localhost:3000"],
