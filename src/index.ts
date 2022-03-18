@@ -9,6 +9,7 @@ import envConfig from "../environment";
 const app = express();
 const port = envConfig.port || 8080;
 
+
 const corsOptions = {
   origin: [envConfig.cors.origin],
 };

@@ -6,12 +6,15 @@
   "description": "Rubrit API",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc && node dist/src/index.js",
+    "start": "ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/HenryBoys/Rubrit-Backend.git"
+  },
+  "engines": {
+    "node": "16.14.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.53.1",
@@ -19,7 +22,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "multer": "^1.4.4"
+    "multer": "^1.4.4",
+    "ts-node": "^10.7.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
