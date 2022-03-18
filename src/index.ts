@@ -1,17 +1,17 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 
 import aws from "./routes/aws";
 import maps from "./routes/maps";
 import subs from "./routes/subs";
+import envConfig from "../environment";
 
-dotenv.config();
 const app = express();
-const port = process.env.PORT || 8080;
+const port = envConfig.port || 8080;
+
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://localhost:3000"],
+  origin: [envConfig.cors.origin],
 };
 
 //middlewares
