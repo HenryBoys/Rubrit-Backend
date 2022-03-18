@@ -36,9 +36,9 @@ const envConfig = {
       preapproval_plan: process.env.MP_PREAPPROVAL_PLAN,
     },
     cors: {
-      origin: process.env.FRONT_DEVELOPMENT,
+      origin: process.env.FRONT_PRODUCTION,
     },
-    port: process.env.FRONT_PRODUCTION,
+    port: process.env.SERVER_PORT,
   },
 }[env];
 
