@@ -18,7 +18,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
-// Entrypoint
+// Entrypointss
 app.get("/", (req, res) => {
   res.send("Hello world!");
 });
