@@ -5,11 +5,17 @@ import aws from "./routes/aws";
 import maps from "./routes/maps";
 import subs from "./routes/subs";
 import chat from "./routes/chat";
-
 import envConfig from "../environment";
+import userRoutes from "./routes/userRoutes";
+import  connectDb from "./config/db";
+import dotenv from 'dotenv';
 
 const app = express();
 const port = envConfig.port || 8080;
+dotenv.config();
+connectDb();
+
+app.use(express.json());
 
 const corsOptions = {
   origin: [envConfig.cors.origin],
@@ -28,7 +34,7 @@ app.use("/aws", aws);
 app.use("/maps", maps);
 app.use("/subs", subs);
 
-app.use("/chat", chat);
+app.use("/user",userRoutes)
 
 // Start the Express server
 app.listen(port, () => {
