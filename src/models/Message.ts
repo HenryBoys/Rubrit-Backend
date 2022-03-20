@@ -1,4 +1,5 @@
 import { model, models, Schema, Types } from "mongoose";
+import { IMessage } from "./Interfaces";
 
 const messageSchema = new Schema(
   {
@@ -20,4 +21,4 @@ const messageSchema = new Schema(
   }
 );
 
-export default models.Chat || model("Message", messageSchema);
+export default models.Message || model<IMessage>("Message", messageSchema);
