@@ -7,3 +7,9 @@ export interface IChat {
   latestMessage: Types.ObjectId;
   groupAdmin: Types.ObjectId;
 }
+
+export interface IMessage {
+  sender: Types.ObjectId;
+  content: string;
+  chat: Types.ObjectId;
+}

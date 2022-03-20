@@ -1,10 +1,11 @@
-import express from "express";
+import express, { application } from "express";
 import cors from "cors";
 
 import aws from "./routes/aws";
 import maps from "./routes/maps";
 import subs from "./routes/subs";
 import chat from "./routes/chat";
+import message from "./routes/message";
 import envConfig from "../environment";
 import user from "./routes/user";
 import connectDb from "./config/db";
@@ -37,6 +38,7 @@ app.use("/subs", subs);
 
 app.use("/user", user);
 app.use("/chat", chat);
+app.use("/message", message);
 
 app.use(notFound);
 app.use(errorHandler);
