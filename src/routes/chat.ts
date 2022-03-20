@@ -1,12 +1,21 @@
 import express, { Request, Response } from "express";
-import axios from "axios";
-import env from "../../environment";
-import { chats } from "../data/data";
+import { protect } from "../middlewares/authMiddleware";
+import {
+  accessChat,
+  addToGroup,
+  createGroupChat,
+  fetchChats,
+  removeFromGroup,
+  renameGroup,
+} from "../controllers/chatController";
 
-const app = express.Router();
+const router = express.Router();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send(chats);
-});
+router.route("/").post(protect, accessChat);
+router.route("/").get(protect, fetchChats);
+router.route("/group").post(protect, createGroupChat);
+router.route("/rename").put(protect, renameGroup);
+router.route("/groupremove").put(protect, removeFromGroup);
+router.route("/groupadd").put(protect, addToGroup);
 
-export default app;
+export default router;

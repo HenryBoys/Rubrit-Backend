@@ -6,9 +6,9 @@ import maps from "./routes/maps";
 import subs from "./routes/subs";
 import chat from "./routes/chat";
 import envConfig from "../environment";
-import userRoutes from "./routes/userRoutes";
-import  connectDb from "./config/db";
-import dotenv from 'dotenv';
+import user from "./routes/user";
+import connectDb from "./config/db";
+import dotenv from "dotenv";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware";
 
 const app = express();
@@ -35,11 +35,11 @@ app.use("/aws", aws);
 app.use("/maps", maps);
 app.use("/subs", subs);
 
-app.use("/user",userRoutes)
+app.use("/user", user);
+app.use("/chat", chat);
 
-
-app.use(notFound)
-app.use(errorHandler)
+app.use(notFound);
+app.use(errorHandler);
 
 // Start the Express server
 app.listen(port, () => {

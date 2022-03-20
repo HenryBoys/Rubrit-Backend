@@ -1,5 +1,6 @@
 //from modules
 import { model, models, Schema, Types } from "mongoose";
+import { IChat } from "./Interfaces";
 
 const chatSchema = new Schema(
   {
@@ -31,4 +32,4 @@ const chatSchema = new Schema(
   }
 );
 
-export default models.Chat || model("Chat", chatSchema);
+export default models.Chat || model<IChat>("Chat", chatSchema);
