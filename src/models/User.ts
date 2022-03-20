@@ -28,21 +28,17 @@ const useSchema = new Schema(
 );
 
 useSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password); // compare the entered password with the password in the database
-}; // this is a method that we can use on the userSchema  to compare the password that the user entered with the password that we have in the database 
+  return await bcrypt.compare(enteredPassword, this.password); 
+};
 
-useSchema.pre("save", async function (next) { // pre is a middleware that runs before the save function
+useSchema.pre("save", async function (next) {
   if (!this.isModified) {
     next();
   }
 
-  /* 
-  bcrypt is used to hash the password
-  for using bcrypt we need to install the package first in the terminal: npm install bcryptjs
-   */
-
-  const salt = await bcrypt.genSalt(10); // generate a salt for the password hashing algorithm (10 is the number of rounds) 
-  this.password = await bcrypt.hash(this.password, salt); // hash the password  (this.password is the password that the user entered) 
+ 
+  const salt = await bcrypt.genSalt(10); 
+  this.password = await bcrypt.hash(this.password, salt); 
 }); 
 
 
