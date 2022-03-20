@@ -1,9 +1,8 @@
 import { model, models, Schema, Types } from "mongoose";
 import bcrypt from "bcryptjs";
 
-
-
 const useSchema = new Schema(
+
   {
     name: {
       type: String,
@@ -44,4 +43,4 @@ useSchema.pre("save", async function (next) {
 }); 
 
 
-export default models.Chat || model("User", useSchema);
+export default models.User || model("User", userSchema);
