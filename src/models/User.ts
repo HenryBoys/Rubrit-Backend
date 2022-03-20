@@ -1,7 +1,7 @@
 import { model, models, Schema, Types } from "mongoose";
 import bcrypt from "bcryptjs";
 
-const useSchema = new Schema(
+const userSchema = new Schema(
 
   {
     name: {
@@ -28,11 +28,11 @@ const useSchema = new Schema(
   }
 );
 
-useSchema.methods.matchPassword = async function (enteredPassword) {
+userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password); 
 };
 
-useSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next) {
   if (!this.isModified) {
     next();
   }
