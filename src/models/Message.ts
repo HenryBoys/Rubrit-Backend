@@ -15,6 +15,7 @@ const messageSchema = new Schema(
       type: Types.ObjectId,
       ref: "Chat",
     },
+    readBy: [{ type: Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,
