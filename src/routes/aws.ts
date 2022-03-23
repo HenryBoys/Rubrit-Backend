@@ -1,5 +1,6 @@
 import express from "express";
 import multer from "multer";
+import sharp  from "sharp";
 import { S3Client, ListBucketsCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 
 import env from "../../environment";
@@ -21,7 +22,8 @@ app.post('/upload-file', upload.single('file'), async (req, res) => {
   if (!req.body.path || !req.body.title || !req.file) return res.status(400).json('Invalid request');
   let response;
   try {
-    const data = { Bucket: env.aws_s3.bucket, Key: `${req.body.path}/${req.body.title}`, Body: req.file.buffer };
+    let buffer = await sharp(req.file.buffer).webp({ quality: 30 }).toBuffer();
+    const data = { Bucket: env.aws_s3.bucket, Key: `${req.body.path}/${req.body.title}`, Body: buffer };
     const command = new PutObjectCommand(data)
     response = await client.send(command);
   } catch (error) {
@@ -37,11 +39,13 @@ app.post('/upload-files', upload.array('files'), async (req, res) => {
   const files = req.files;
   let uploadedFilesUrl: string[] = [];
   let response;
+  let buffer;
   try {
     // @ts-ignore
-    let fileUploadPromises = files.map(file => {
+    let fileUploadPromises = files.map(async (file) => {
+      buffer = await sharp(file.buffer).webp({ quality: 30 }).toBuffer();
       uploadedFilesUrl.push(`${env.aws_s3.uri}/${req.body.path}/${file.originalname}`)
-      const data = { Bucket: env.aws_s3.bucket, Key: `${req.body.path}/${file.originalname}`, Body: file.buffer };
+      const data = { Bucket: env.aws_s3.bucket, Key: `${req.body.path}/${file.originalname}`, Body: buffer };
       const command = new PutObjectCommand(data);
       return client.send(command);
     });
