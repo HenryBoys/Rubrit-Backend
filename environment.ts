@@ -17,6 +17,10 @@ const envConfig = {
       access_token: process.env.MP_ACCESS_TOKEN,
       preapproval_plan: process.env.MP_PREAPPROVAL_PLAN,
     },
+    cors: {
+      origin: process.env.FRONT_DEVELOPMENT,
+    },
+    port: process.env.SERVER_PORT,
   },
   production: {
     aws_s3: {
@@ -31,6 +35,10 @@ const envConfig = {
       access_token: process.env.MP_ACCESS_TOKEN,
       preapproval_plan: process.env.MP_PREAPPROVAL_PLAN,
     },
+    cors: {
+      origin: process.env.FRONT_PRODUCTION,
+    },
+    port: process.env.SERVER_PORT,
   },
 }[env];
 
