@@ -20,7 +20,7 @@ const envConfig = {
     cors: {
       origin: process.env.FRONT_DEVELOPMENT,
     },
-    port: process.env.SERVER_PORT,
+    port: process.env.PORT,
   },
   production: {
     aws_s3: {
@@ -38,7 +38,7 @@ const envConfig = {
     cors: {
       origin: process.env.FRONT_PRODUCTION,
     },
-    port: process.env.SERVER_PORT,
+    port: process.env.PORT,
   },
 }[env];
 
