@@ -12,6 +12,8 @@ import connectDb from "./config/db";
 import dotenv from "dotenv";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware";
 
+import { createServer } from "http";
+import { Server } from "socket.io";
 const app = express();
 const port = envConfig.port || 8080;
 dotenv.config();
@@ -44,20 +46,25 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Start the Express server
-const server = app.listen(port, () => {
-  console.log(`server started at http://localhost:${port}`);
-});
-
-const io = require('socket.io')(server, {
+// const server = app.listen(port, () => {
+//   console.log(`server started at http://localhost:${port}`);
+// });
+const httpServer = createServer(app);
+// const io = require("socket.io")(server, {
+//   pingTimeout: 60000,
+//   cors: {
+//     origin: envConfig.cors.origin,
+//   },
+// });
+const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
     origin: envConfig.cors.origin,
   },
 });
-
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
-  socket.on("setup", (userData:any) => {
+  socket.on("setup", (userData: any) => {
     socket.join(userData._id);
     socket.emit("connected");
   });
@@ -75,9 +82,23 @@ io.on("connection", (socket) => {
     if (!chat.users) return console.log("chat.users not defined");
 
     chat.users.forEach((user) => {
-      if (user._id == newMessageRecieved.sender._id) return;
+      console.log(user._id, newMessageRecieved.sender._id);
+      if (user._id === newMessageRecieved.sender._id) return;
 
       socket.in(user._id).emit("message recieved", newMessageRecieved);
+    });
+  });
+
+  //chat
+  socket.on("new chat", (newChatRecieved, creator) => {
+    // var chat = newChatRecieved.chat;
+
+    if (!newChatRecieved.users) return console.log("chat.users not defined");
+    console.log("new Chat");
+    newChatRecieved.users.forEach((user) => {
+      if (user._id === creator) return;
+
+      socket.in(user._id).emit("chat recieved", newChatRecieved);
     });
   });
 
@@ -87,4 +108,6 @@ io.on("connection", (socket) => {
   });
 });
 
-
+httpServer.listen(port, () => {
+  console.log(`server started at http://localhost:${port}`);
+});
