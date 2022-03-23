@@ -1,16 +1,19 @@
-import  { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import Chat from "../models/Chat";
 import User from "../models/User";
 import Message from "../models/Message";
 
-
-export const allMessages = asyncHandler(
-    async (req:Request , res:Response) => {
+export const allMessages = asyncHandler(async (req: Request, res: Response) => {
   try {
-    const messages = await Message.find({ chat: req.params.chatId })
-      .populate({path:"sender", model:"User", select: "name pic email"})
-      .populate("chat");
+    const queryPopulate = [
+      { path: "sender", model: "User", select: "_id name profilePic email" },
+      { path: "chat", model: "Chat" },
+    ];
+    const messages = await Message.find({ chat: req.params.chatId }).populate(
+      queryPopulate
+    );
+    // .populate("chat");
     res.json(messages);
   } catch (error) {
     res.status(400);
@@ -18,9 +21,7 @@ export const allMessages = asyncHandler(
   }
 });
 
-
 export const sendMessage = asyncHandler(async (req: any, res: any) => {
-
   const { content, chatId } = req.body;
 
   if (!content || !chatId) {
@@ -36,17 +37,19 @@ export const sendMessage = asyncHandler(async (req: any, res: any) => {
 
   try {
     var message = await Message.create(newMessage);
-    
-    message = await message.populate({path:"sender", model:"User", select: "name pic"});
+
+    message = await message.populate({
+      path: "sender",
+      model: "User",
+      select: "_id name profilePic",
+    });
     message = await message.populate("chat");
     message = await User.populate(message, {
       path: "chat.users",
-      select: "name pic email",
+      select: "_id name profilePic email",
     });
 
     await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
- 
-
 
     res.json(message);
   } catch (error) {
@@ -54,5 +57,3 @@ export const sendMessage = asyncHandler(async (req: any, res: any) => {
     throw new Error(error.message);
   }
 });
-
-

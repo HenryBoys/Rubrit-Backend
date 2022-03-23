@@ -14,7 +14,6 @@ declare global {
 export const protect = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     let token;
-
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
@@ -25,7 +24,9 @@ export const protect = asyncHandler(
         //decodes token id
         const decoded: any = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.user = await User.findById(decoded.id).select("-password");
+        req.user = await User.findById(decoded.id).select(
+          "_id name email profilePic"
+        );
 
         next();
       } catch (error) {
