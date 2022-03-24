@@ -80,10 +80,10 @@ io.on("connection", (socket) => {
     var chat = newMessageRecieved.chat;
 
     if (!chat.users) return console.log("chat.users not defined");
-
+    console.log("new message");
     chat.users.forEach((user) => {
-      console.log(user._id, newMessageRecieved.sender._id);
       if (user._id === newMessageRecieved.sender._id) return;
+      console.log(user._id, newMessageRecieved.sender._id);
 
       socket.in(user._id).emit("message recieved", newMessageRecieved);
     });
@@ -98,7 +98,7 @@ io.on("connection", (socket) => {
     newChatRecieved.users.forEach((user) => {
       if (user._id === creator) return;
 
-      socket.in(user._id).emit("chat recieved", newChatRecieved);
+      socket.in(user._id).emit("chat received", newChatRecieved);
     });
   });
 
